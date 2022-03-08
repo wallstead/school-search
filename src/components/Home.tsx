@@ -65,7 +65,7 @@ const Home: React.FC = () => {
                     </Text>
                 </Card>
             </ScaleFade> */}
-            
+
             <ScaleFade initialScale={0.9} in={true}>
                 <Heading as='h1' size='2xl' mb={5} >School Search</Heading>
                 <Search />

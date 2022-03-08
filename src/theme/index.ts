@@ -19,8 +19,14 @@ const colors = {
   red: {100: "#ff4658"},
   pink: {100: "#e748b9" }
 }
+
+const fonts = {
+  heading: 'Archivo, sans-serif',
+}
+
 export const theme = extendTheme({ 
   colors,
+  fonts,
   components: {
     Card: CardTheme,
     ...overrides
