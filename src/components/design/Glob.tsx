@@ -39,7 +39,8 @@ const Glob: React.FC<{
                 width: size[0],
                 height: size[1],
                 opacity,
-                transform: rotate ? `rotate(${rotate}deg)` : undefined
+                transform: rotate ? `rotate(${rotate}deg)` : undefined,
+                zIndex: -1
             }}>
                 <div className='glob'
                     style={{

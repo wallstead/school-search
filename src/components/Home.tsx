@@ -16,6 +16,7 @@ import {
     VStack,
     InputRightAddon,
 } from "@chakra-ui/react"
+import Search from './Search'
 import { Card } from '@components/design/Card'
 import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
 
@@ -42,8 +43,8 @@ const Home: React.FC = () => {
     }, [])
     
     return (
-        <Center padding="100px" height="90vh">
-            <ScaleFade initialScale={0.9} in={true}>
+        <Center padding="100px">
+            {/* <ScaleFade initialScale={0.9} in={true}>
                 <Card variant="rounded" borderColor="blue">
                     <Heading>School Data Finder</Heading>
                     <Text>
@@ -63,6 +64,11 @@ const Home: React.FC = () => {
                         {schoolSearch.length} Demo Schools<br />
                     </Text>
                 </Card>
+            </ScaleFade> */}
+            
+            <ScaleFade initialScale={0.9} in={true}>
+                <Heading as='h1' size='2xl' mb={5} >School Search</Heading>
+                <Search />
             </ScaleFade>
         </Center>
     );
