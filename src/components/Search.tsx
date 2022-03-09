@@ -12,19 +12,21 @@ import {
     OrderedList,
     ListItem,
     Divider,
-    Text
+    Text,
+    Box
 } from "@chakra-ui/react";
-import { Search2Icon } from "@chakra-ui/icons";
+import { Search2Icon, CheckIcon } from "@chakra-ui/icons";
 import { Card } from "@components/design/Card";
 import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
 
 
 const Search: React.FC = () => {
-    const [searching, setSearching] = useState(false)
+    const [searching, setSearching] = useState(false);
     const [districtSearch, setDistrictSearch] = useState<NCESDistrictFeatureAttributes[]>([]);
     const [schoolSearch, setSchoolSearch] = useState<NCESSchoolFeatureAttributes[]>([]);
-    const [districtInput, setDistrictInput] = useState('washoe');
+    const [districtInput, setDistrictInput] = useState('');
     const [schoolInput, setSchoolInput] = useState('');
+    const [selectedDistrict, setSelectedDistrict] = useState<NCESSchoolFeatureAttributes["LEAID"]>('');
 
     function clearSearches() {
         setDistrictInput('');
@@ -114,27 +116,59 @@ const Search: React.FC = () => {
                 <Spinner mt={3} />
             ) : (
                 districtSearch.length > 0 && (
-                    <VStack mt={3} w="100%">
-                        <Text w="100%" fontWeight="bold">
-                            Districts
-                        </Text>
-                        <OrderedList
-                            w="100%"
-                            listStyleType="none"
-                            overflowY="auto"
-                            maxHeight="200px"
-                            spacing={3}
-                        >
-                            {districtSearch.map((district) => {
-                                return (
-                                    <ListItem>
-                                        {district.NAME}, {district.LSTATE}
-                                    </ListItem>
-                                );
-                            })}
-                        </OrderedList>
-                        <Divider orientation="horizontal" />
-                    </VStack>
+                    <Box w="100%">
+                        <ScaleFade initialScale={0.9} in={true}>
+                            <VStack mt={3} w="100%">
+                                <HStack w="100%">
+                                    <Text fontWeight="bold">Districts</Text>
+                                    <Text color="gray.700">
+                                        Select a district to filter schools
+                                    </Text>
+                                </HStack>
+                                <Divider orientation="horizontal" />
+                                <OrderedList
+                                    w="100%"
+                                    listStyleType="none"
+                                    overflowY="auto"
+                                    maxHeight="200px"
+                                    spacing={1}
+                                >
+                                    {districtSearch.map((district) => {
+                                        const selected = district.LEAID === selectedDistrict;
+                                        return (
+                                            <ListItem
+                                                p={2}
+                                                borderRadius={12}
+                                                transition="background-color 150ms linear"
+                                                background={selected ? "gray.100" : "transparent"}
+                                                _hover={{
+                                                    background: "gray.100",
+                                                    cursor: "pointer",
+                                                }}
+                                                _active={{
+                                                    background: "gray.200"
+                                                }}
+                                                onClick={() => setSelectedDistrict(district.LEAID)}
+                                            >
+                                                <HStack>
+                                                    <Text userSelect="none">
+                                                        {district.NAME},{" "}
+                                                        {district.LSTATE}
+                                                    </Text>
+                                                    {selected &&
+                                                        <ScaleFade initialScale={0.5} in={true}>
+                                                            <CheckIcon color="green" />
+                                                        </ScaleFade>
+                                                    }
+                                                </HStack>
+                                            </ListItem>
+                                        );
+                                    })}
+                                </OrderedList>
+                                <Divider orientation="horizontal" />
+                            </VStack>
+                        </ScaleFade>
+                    </Box>
                 )
             )}
         </Card>

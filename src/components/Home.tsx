@@ -1,20 +1,8 @@
 import React from "react"
 import {
-    Button,
     Center,
     Heading,
-    Text,
-    Icon,
-    Input,
     ScaleFade,
-    OrderedList,
-    Divider,
-    ListItem,
-    Spinner,
-    InputGroup, // Some Chakra components that might be usefull
-    HStack,
-    VStack,
-    InputRightAddon,
 } from "@chakra-ui/react"
 import Search from './Search'
 
