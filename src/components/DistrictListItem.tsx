@@ -69,7 +69,7 @@ const DistrictListItem: React.FC<{
                             }}
                         >
                             {Object.entries(district).map(districtInfo => {
-                                return <ListItem><Text fontWeight="bold">{districtInfo[0]}:</Text> {districtInfo[1]}</ListItem>
+                                return <ListItem key={districtInfo[0]}><Text fontWeight="bold">{districtInfo[0]}:</Text> {districtInfo[1]}</ListItem>
                             })}
                         </UnorderedList>
                     </ModalBody>
