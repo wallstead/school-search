@@ -25,7 +25,7 @@ const DistrictListItem: React.FC<{
     selectedDistrict: string | undefined;
     setSelectedDistrict: Dispatch<SetStateAction<string | undefined>>;
 }> = ({district, selectedDistrict, setSelectedDistrict}) => {
-    
+
     const {isOpen, onOpen, onClose} = useDisclosure(); 
     const selected = district.LEAID === selectedDistrict;
 
@@ -35,7 +35,7 @@ const DistrictListItem: React.FC<{
             px={3}
             borderRadius={12}
             transition="background-color 150ms linear"
-            background={selected ? "gray.100" : "transparent"}
+            background={selected ? "gray.100" : "gray.50"}
             _hover={{
                 background: "gray.100",
                 cursor: "pointer",
@@ -56,7 +56,18 @@ const DistrictListItem: React.FC<{
                             {'Data from data-nces.opendata.arcgis.com '} <ExternalLinkIcon ml={2} mb={1} />
                         </Link>
                         
-                        <UnorderedList listStyleType="none" ml={0} mt={2} spacing={1}>
+                        <UnorderedList 
+                            listStyleType="none" 
+                            ml={0} 
+                            mt={2} 
+                            spacing={1} 
+                            maxHeight="300px" 
+                            overflowY="auto"
+                            pb={5}
+                            sx={{
+                                maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0))'
+                            }}
+                        >
                             {Object.entries(district).map(districtInfo => {
                                 return <ListItem><Text fontWeight="bold">{districtInfo[0]}:</Text> {districtInfo[1]}</ListItem>
                             })}

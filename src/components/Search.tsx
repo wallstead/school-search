@@ -148,6 +148,10 @@ const Search: React.FC = () => {
                                         overflowY="auto"
                                         maxHeight="200px"
                                         spacing={1}
+                                        pb={5}
+                                        sx={{
+                                            maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0))'
+                                        }}
                                     >
                                         {districtSearch.map((district) => {
                                             
