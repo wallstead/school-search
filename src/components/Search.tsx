@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import debounce from "lodash/debounce";
 import {
     Input,
     ScaleFade,
@@ -25,22 +26,28 @@ const Search: React.FC = () => {
         setSchoolInput('');
     }
 
-    async function startSearch() {
+    async function startSearch(district: string, school: string) {
         setSearching(true)
-        const districtSearchResults = await searchSchoolDistricts(districtInput)
+        const districtSearchResults = await searchSchoolDistricts(district)
         setDistrictSearch(districtSearchResults)
         console.log("District results", districtSearchResults)
 
-        const demoSchoolSearch = await searchSchools("reno", districtSearchResults[0].LEAID)
+        const demoSchoolSearch = await searchSchools(school, districtSearchResults[0].LEAID)
         setSchoolSearch(demoSchoolSearch)
         console.log("School results", demoSchoolSearch)
         setSearching(false)
     }
 
+    // To delay search until the user stops typing to not abuse the API
+    const delayedSearch = useCallback(
+        debounce((district, school) => startSearch(district, school), 600),
+        []
+    );
+
     // Whenever the district or school name inputs change, trigger a search
     useEffect(() => {
-        startSearch()
-    }, []);
+        delayedSearch(districtInput, schoolInput)
+    }, [districtInput, schoolInput]);
 
     return (
         <Card variant="rounded">
