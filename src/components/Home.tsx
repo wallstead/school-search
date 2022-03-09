@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import {
     Button,
     Center,
@@ -17,31 +17,9 @@ import {
     InputRightAddon,
 } from "@chakra-ui/react"
 import Search from './Search'
-import { Card } from '@components/design/Card'
-import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
 
 
 const Home: React.FC = () => {
-    const [searching, setSearching] = React.useState(false)
-    const [districtSearch, setDistrictSearch] = React.useState<NCESDistrictFeatureAttributes[]>([]);
-    const [schoolSearch, setSchoolSearch] = React.useState<NCESSchoolFeatureAttributes[]>([]);
-    
-    const demo = async () => { // see console for api result examples
-        setSearching(true)
-        const demoDistrictSearch = await searchSchoolDistricts("Peninsula School District")
-        setDistrictSearch(demoDistrictSearch)
-        console.log("District example", demoDistrictSearch)
-
-        const demoSchoolSearch = await searchSchools("k", demoDistrictSearch[1].LEAID)
-        setSchoolSearch(demoSchoolSearch)
-        console.log("School Example", demoSchoolSearch)
-        setSearching(false)
-    }
-
-    useEffect(() => {
-        demo()
-    }, [])
-    
     return (
         <Center padding="100px">
             {/* <ScaleFade initialScale={0.9} in={true}>
@@ -67,7 +45,7 @@ const Home: React.FC = () => {
             </ScaleFade> */}
 
             <ScaleFade initialScale={0.9} in={true}>
-                <Heading as='h1' size='2xl' mb={5} >School Search</Heading>
+                <Heading as='h1' size='2xl' mb={5} textAlign='center'>School Search</Heading>
                 <Search />
             </ScaleFade>
         </Center>
