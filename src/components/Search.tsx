@@ -59,27 +59,25 @@ const Search: React.FC = () => {
         }
 
         /* 
-            We need to trigger school search if the search string changes OR
-            we can no longer find the chosen district in the search results for districts, if there was a search made for those
+            Trigger school search if the search string changes OR
+            we can no longer find the chosen district in the search
+            results for districts, if there was a search made for those
         */
 
-        let matchingChosenDistrictID = undefined;
+        let matchingChosenDistrictID = chosenDistrict;
         let shouldTriggerSchoolSearch = false;
-        if (chosenDistrict) {
-            if (didSearchDistricts) {
-                const matchingChosenDistrict = districtSearchResults.find(district => district.LEAID === chosenDistrict);
-                matchingChosenDistrictID = matchingChosenDistrict?.LEAID;
-                shouldTriggerSchoolSearch = true
-            } else {
-                matchingChosenDistrictID = chosenDistrict
-            }
+
+        if (chosenDistrict && didSearchDistricts) {
+            const matchingChosenDistrict = districtSearchResults.find(district => district.LEAID === chosenDistrict);
+            matchingChosenDistrictID = matchingChosenDistrict?.LEAID;
+            shouldTriggerSchoolSearch = true;
         }
         
         if (searching === "school" || shouldTriggerSchoolSearch) {
             setSearchingSchools(true);
-            
-            if (school.length > 0) {
-                // Filter schools by the matching chosen district from teh district search results, only if the matching district exists
+
+            // If school search input is not empty or a district has been selected
+            if (school.length > 0 || (matchingChosenDistrictID && matchingChosenDistrictID.length > 0)) {
                 const schoolSearchResults = await searchSchools(school, matchingChosenDistrictID);
                 setSchoolSearch(schoolSearchResults);
                 console.log("School results", schoolSearchResults);

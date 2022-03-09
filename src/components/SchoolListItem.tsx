@@ -31,7 +31,7 @@ const SchoolListItem: React.FC<{
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader textTransform="capitalize">{school.NAME.toLowerCase()}</ModalHeader>
+                    <ModalHeader textTransform="capitalize">{school.NAME?.toLowerCase()}</ModalHeader>
                     <ModalCloseButton />
                     <Divider orientation="horizontal" />
                     <ModalBody mb={2}>
