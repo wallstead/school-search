@@ -6,6 +6,7 @@ import {
     Spinner,
     InputGroup,
     HStack,
+    Stack,
     InputLeftElement,
     Button,
     VStack,
@@ -111,9 +112,9 @@ const Search: React.FC = () => {
 
     return (
         <Card variant="rounded">
-            <HStack spacing="5px">
-                <HStack spacing="0px">
-                    <InputGroup size="lg">
+            <Stack spacing="5px" direction={{ base: 'column', md: 'row' }}>
+                <Stack spacing="0px" direction={{ base: 'column', md: 'row' }}>
+                    <InputGroup size="lg" mb={{ base: '5px', md: '0' }}>
                         <InputLeftElement
                             pointerEvents="none"
                             children={<Search2Icon color="gray.300" />}
@@ -121,8 +122,8 @@ const Search: React.FC = () => {
                         <Input
                             type="tel"
                             placeholder="School District"
-                            borderRightRadius="0"
-                            borderRightColor="transparent"
+                            borderRightRadius={{ base: 'default', md: '0' }}
+                            borderRightColor={{ base: 'default', md: 'transparent' }}
                             value={districtInput}
                             onChange={(e) => setDistrictInput(e.target.value)}
                         />
@@ -135,24 +136,22 @@ const Search: React.FC = () => {
                         <Input
                             type="tel"
                             placeholder="School Name"
-                            borderLeftRadius="0"
+                            borderLeftRadius={{ base: 'default', md: '0' }}
                             value={schoolInput}
                             onChange={(e) => setSchoolInput(e.target.value)}
                         />
                     </InputGroup>
-                </HStack>
-                <HStack spacing="5px">
-                    <Button
-                        colorScheme="green"
-                        variant="ghost"
-                        borderRadius="11px"
-                        size="lg"
-                        onClick={() => clearSearches()}
-                    >
-                        Clear
-                    </Button>
-                </HStack>
-            </HStack>
+                </Stack>
+                <Button
+                    colorScheme="green"
+                    variant="ghost"
+                    borderRadius="11px"
+                    size="lg"
+                    onClick={() => clearSearches()}
+                >
+                    Clear
+                </Button>
+            </Stack>
             {searchingDistricts ? (
                 <Spinner mt={3} />
             ) : districtSearch.length > 0 ? (

@@ -1,6 +1,5 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React from "react";
 import {
-    ScaleFade,
     HStack,
     UnorderedList,
     ListItem,
@@ -13,11 +12,13 @@ import {
     ModalBody,
     ModalCloseButton,
     Link,
-    Button,
-    useDisclosure
+    useDisclosure,
+    Box
 } from "@chakra-ui/react";
-import {CheckIcon, InfoOutlineIcon, ExternalLinkIcon} from "@chakra-ui/icons";
+import {googleMapsKey} from '../utils/maps'
+import {InfoOutlineIcon, ExternalLinkIcon} from "@chakra-ui/icons";
 import {NCESSchoolFeatureAttributes } from "@utils/nces"
+import GoogleMapReact from 'google-map-react'
 
 
 const SchoolListItem: React.FC<{
@@ -25,7 +26,11 @@ const SchoolListItem: React.FC<{
 }> = ({school}) => {
 
     const {isOpen, onOpen, onClose} = useDisclosure(); 
-
+    const location = {
+        address: '1600 Amphitheatre Parkway, Mountain View, california.',
+        lat: 37.42216,
+        lng: -122.08427,
+      }
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -35,10 +40,18 @@ const SchoolListItem: React.FC<{
                     <ModalCloseButton />
                     <Divider orientation="horizontal" />
                     <ModalBody mb={2}>
+                        <Box height={300}>
+                        <GoogleMapReact
+                            bootstrapURLKeys={{ key: googleMapsKey }}
+                            defaultCenter={location}
+                            defaultZoom={1}
+                        >
+                            
+                        </GoogleMapReact>
+                        </Box>
                         <Link href='https://data-nces.opendata.arcgis.com/datasets/nces::private-school-locations-current/api' isExternal>
                             {'Data from data-nces.opendata.arcgis.com '} <ExternalLinkIcon ml={2} mb={1} />
                         </Link>
-                        
                         <UnorderedList 
                             listStyleType="none" 
                             ml={0} 
