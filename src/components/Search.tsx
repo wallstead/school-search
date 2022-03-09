@@ -31,6 +31,7 @@ const Search: React.FC = () => {
     function clearSearches() {
         setDistrictInput('');
         setSchoolInput('');
+        setSelectedDistrict('');
     }
 
     async function startSearch(district: string, school: string, chosenDistrict: NCESSchoolFeatureAttributes["LEAID"]) {
@@ -44,11 +45,16 @@ const Search: React.FC = () => {
             console.log("District results", districtSearchResults)
         } else {
             setDistrictSearch([]);
-            setSelectedDistrict('');
         }
 
+        // If chosenDistrict is set, check if it's in the results array for the search 
+        let matchingChosenDistrict = undefined;
+        if (chosenDistrict) {
+            matchingChosenDistrict = districtSearchResults.find(district => district.LEAID === chosenDistrict);
+        } 
+
         if (school.length > 0) {
-            const schoolSearchResults = await searchSchools(school, chosenDistrict)
+            const schoolSearchResults = await searchSchools(school, matchingChosenDistrict?.LEAID)
             setSchoolSearch(schoolSearchResults)
             console.log("School results", schoolSearchResults)
         } else {
@@ -64,10 +70,15 @@ const Search: React.FC = () => {
         []
     );
 
-    // Whenever the district or school name inputs change, trigger a search
+    // Whenever the district or school name inputs change, trigger a delayed search
     useEffect(() => {
         delayedSearch(districtInput, schoolInput, selectedDistrict)
-    }, [districtInput, schoolInput, selectedDistrict]);
+    }, [districtInput, schoolInput]);
+
+    // When the selected district is changed, instanty trigger a search
+    useEffect(() => {
+        startSearch(districtInput, schoolInput, selectedDistrict)
+    }, [selectedDistrict]);
 
     return (
         <Card variant="rounded">
