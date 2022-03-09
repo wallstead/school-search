@@ -10,14 +10,14 @@ import {
     Button,
     VStack,
     OrderedList,
-    ListItem,
     Divider,
     Text,
     Box,
 } from "@chakra-ui/react";
-import { Search2Icon, CheckIcon, InfoOutlineIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { Search2Icon } from "@chakra-ui/icons";
 import { Card } from "@components/design/Card";
 import DistrictListItem from "./DistrictListItem";
+import SchoolListItem from "./SchoolListItem";
 import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
 
 
@@ -74,21 +74,16 @@ const Search: React.FC = () => {
                 matchingChosenDistrictID = chosenDistrict
             }
         }
-
-        console.log('matchingChosenDistrictID', matchingChosenDistrictID);
         
         if (searching === "school" || shouldTriggerSchoolSearch) {
             setSearchingSchools(true);
             
             if (school.length > 0) {
-                
-
                 // Filter schools by the matching chosen district from teh district search results, only if the matching district exists
                 const schoolSearchResults = await searchSchools(school, matchingChosenDistrictID);
                 setSchoolSearch(schoolSearchResults);
                 console.log("School results", schoolSearchResults);
             } else {
-                
                 setSchoolSearch([]);
             }
     
@@ -196,7 +191,6 @@ const Search: React.FC = () => {
                     </ScaleFade>
                 </Box>
             ) : null}
-
             {searchingSchools ? (
                 <Spinner mt={3} />
             ) : schoolSearch.length > 0 ? (
@@ -211,20 +205,14 @@ const Search: React.FC = () => {
                                 overflowY="auto"
                                 maxHeight="200px"
                                 spacing={1}
+                                pb={schoolSearch.length > 3 ? 5 : 0}
+                                sx={{
+                                    maskImage: schoolSearch.length > 3 ? 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0))' : 'none'
+                                }}
                             >
                                 {schoolSearch.map((school, index) => {
                                     return (
-                                        <ListItem
-                                            py={2}
-                                            px={3}
-                                            key={index}
-                                        >
-                                            <HStack>
-                                                <Text userSelect="none">
-                                                    {school.NAME}
-                                                </Text>
-                                            </HStack>
-                                        </ListItem>
+                                        <SchoolListItem school={school} key={index} />
                                     );
                                 })}
                             </OrderedList>
@@ -238,37 +226,3 @@ const Search: React.FC = () => {
 };
 
 export default Search;
-
-// {schoolSearch.length > 0 && 
-    //         <Box w="100%">
-    //             <ScaleFade initialScale={0.9} in={true}>
-    //                 <VStack mt={3} w="100%">
-    //                     <Text fontWeight="bold" w="100%">Schools</Text>
-    //                     <Divider orientation="horizontal" />
-    //                     <OrderedList
-    //                         w="100%"
-    //                         listStyleType="none"
-    //                         overflowY="auto"
-    //                         maxHeight="200px"
-    //                         spacing={1}
-    //                     >
-    //                         {schoolSearch.map((school) => {
-    //                             return (
-    //                                 <ListItem
-    //                                     py={2}
-    //                                     px={3}
-    //                                 >
-    //                                     <HStack>
-    //                                         <Text userSelect="none">
-    //                                             {school.NAME}
-    //                                         </Text>
-    //                                     </HStack>
-    //                                 </ListItem>
-    //                             );
-    //                         })}
-    //                     </OrderedList>
-    //                     <Divider orientation="horizontal" />
-    //                 </VStack>
-    //             </ScaleFade>
-    //         </Box>
-    //     }

@@ -34,8 +34,9 @@ const DistrictListItem: React.FC<{
             py={2}
             px={3}
             borderRadius={12}
-            transition="background-color 150ms linear"
+            transition="background-color 150ms linear, border 150ms linear"
             background={selected ? "gray.100" : "gray.50"}
+            border={selected ? "2px solid green": "2px solid transparent"}
             _hover={{
                 background: "gray.100",
                 cursor: "pointer",
