@@ -8,6 +8,11 @@ import {
     HStack,
     InputLeftElement,
     Button,
+    VStack,
+    OrderedList,
+    ListItem,
+    Divider,
+    Text
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 import { Card } from "@components/design/Card";
@@ -28,13 +33,25 @@ const Search: React.FC = () => {
 
     async function startSearch(district: string, school: string) {
         setSearching(true)
-        const districtSearchResults = await searchSchoolDistricts(district)
-        setDistrictSearch(districtSearchResults)
-        console.log("District results", districtSearchResults)
 
-        const demoSchoolSearch = await searchSchools(school, districtSearchResults[0].LEAID)
-        setSchoolSearch(demoSchoolSearch)
-        console.log("School results", demoSchoolSearch)
+        let districtSearchResults: NCESDistrictFeatureAttributes[] = [];
+
+        if (district.length > 0) {
+            districtSearchResults = await searchSchoolDistricts(district)
+            setDistrictSearch(districtSearchResults)
+            console.log("District results", districtSearchResults)
+        } else {
+            setDistrictSearch([]);
+        }
+
+        if (school.length > 0) {
+            const demoSchoolSearch = await searchSchools(school, districtSearchResults[0].LEAID)
+            setSchoolSearch(demoSchoolSearch)
+            console.log("School results", demoSchoolSearch)
+        } else {
+            setSchoolSearch([]);
+        }
+
         setSearching(false)
     }
 
@@ -93,6 +110,33 @@ const Search: React.FC = () => {
                     </Button>
                 </HStack>
             </HStack>
+            {searching ? (
+                <Spinner mt={3} />
+            ) : (
+                districtSearch.length > 0 && (
+                    <VStack mt={3} w="100%">
+                        <Text w="100%" fontWeight="bold">
+                            Districts
+                        </Text>
+                        <OrderedList
+                            w="100%"
+                            listStyleType="none"
+                            overflowY="auto"
+                            maxHeight="200px"
+                            spacing={3}
+                        >
+                            {districtSearch.map((district) => {
+                                return (
+                                    <ListItem>
+                                        {district.NAME}, {district.LSTATE}
+                                    </ListItem>
+                                );
+                            })}
+                        </OrderedList>
+                        <Divider orientation="horizontal" />
+                    </VStack>
+                )
+            )}
         </Card>
     );
 };
