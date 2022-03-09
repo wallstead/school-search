@@ -10,12 +10,22 @@ import {
     Button,
     VStack,
     OrderedList,
+    UnorderedList,
     ListItem,
     Divider,
     Text,
-    Box
+    Box,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    Link
 } from "@chakra-ui/react";
-import { Search2Icon, CheckIcon } from "@chakra-ui/icons";
+import { Search2Icon, CheckIcon, InfoOutlineIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { Card } from "@components/design/Card";
 import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
 
@@ -27,6 +37,7 @@ const Search: React.FC = () => {
     const [districtInput, setDistrictInput] = useState('');
     const [schoolInput, setSchoolInput] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState<NCESSchoolFeatureAttributes["LEAID"]>('');
+    const {isOpen, onOpen, onClose} = useDisclosure(); 
 
     function clearSearches() {
         setDistrictInput('');
@@ -54,6 +65,7 @@ const Search: React.FC = () => {
         } 
 
         if (school.length > 0) {
+            // Filter schools by the matching chosen district from teh district search results, only if the matching district exists.
             const schoolSearchResults = await searchSchools(school, matchingChosenDistrict?.LEAID)
             setSchoolSearch(schoolSearchResults)
             console.log("School results", schoolSearchResults)
@@ -128,7 +140,7 @@ const Search: React.FC = () => {
                 <Spinner mt={3} />
             ) : (
                 <>
-                    {districtSearch.length > 0 && 
+                    {districtSearch.length > 0 &&  
                         <Box w="100%">
                             <ScaleFade initialScale={0.9} in={true}>
                                 <VStack mt={3} w="100%">
@@ -164,16 +176,42 @@ const Search: React.FC = () => {
                                                     }}
                                                     onClick={() => selected ? setSelectedDistrict('') : setSelectedDistrict(district.LEAID)}
                                                 >
-                                                    <HStack>
-                                                        <Text userSelect="none">
-                                                            {district.NAME},{" "}
-                                                            {district.LSTATE}
-                                                        </Text>
+                                                    <Modal isOpen={isOpen} onClose={onClose}>
+                                                        <ModalOverlay />
+                                                        <ModalContent>
+                                                            <ModalHeader textTransform="capitalize">{district.NAME.toLowerCase()}</ModalHeader>
+                                                            <ModalCloseButton />
+                                                            <Divider orientation="horizontal" />
+                                                            <ModalBody mb={2}>
+                                                                <Link href='https://data-nces.opendata.arcgis.com/datasets/nces::private-school-locations-current/api' isExternal>
+                                                                    {'Data from data-nces.opendata.arcgis.com '} <ExternalLinkIcon ml={2} mb={1} />
+                                                                </Link>
+                                                                
+                                                                <UnorderedList listStyleType="none" ml={0} mt={2} spacing={1}>
+                                                                    {Object.entries(district).map(districtInfo => {
+                                                                        return <ListItem><Text fontWeight="bold">{districtInfo[0]}:</Text> {districtInfo[1]}</ListItem>
+                                                                    })}
+                                                                </UnorderedList>
+                                                            </ModalBody>
+                                                        </ModalContent>
+                                                    </Modal>
+                                                    <HStack justify="space-between">
+                                                        <HStack>
+                                                            <Text userSelect="none" textTransform="capitalize">
+                                                                {district.NAME.toLowerCase()},{" "}
+                                                                {district.LSTATE}
+                                                            </Text>
+                                                            <Button colorScheme='transparent' variant='ghost' px={2} onClick={(event) => {
+                                                                event.stopPropagation(); // Stop click from bubbling up to the list item
+                                                                onOpen();
+                                                            } }>
+                                                                <InfoOutlineIcon />
+                                                            </Button>
+                                                        </HStack>
                                                         {selected &&
                                                             <ScaleFade initialScale={0.5} in={true}>
-                                                                <CheckIcon color="green" />
-                                                            </ScaleFade>
-                                                        }
+                                                                <CheckIcon color="green" mb={1} />
+                                                            </ScaleFade>}
                                                     </HStack>
                                                 </ListItem>
                                             );
