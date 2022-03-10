@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, useStyleConfig } from "@chakra-ui/react"
+import * as CSS from "csstype";
+import { Box, useStyleConfig, ResponsiveValue } from "@chakra-ui/react"
 
 export const CardTheme = {
     // The styles all Cards have in common
@@ -29,7 +30,7 @@ export const CardTheme = {
     },
 }
 
-export const Card:React.FC<{variant:string, borderColor?:string, pointerEvents?:string}> = ({variant, children, borderColor, pointerEvents, ...rest}) => {
+export const Card:React.FC<{variant:string, borderColor?:string, pointerEvents?:ResponsiveValue<CSS.Property.PointerEvents>}> = ({variant, children, borderColor, pointerEvents, ...rest}) => {
   const styles = useStyleConfig("Card", { variant })
   // Pass the computed styles into the `__css` prop
   return (
