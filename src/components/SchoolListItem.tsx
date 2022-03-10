@@ -26,11 +26,7 @@ const SchoolListItem: React.FC<{
 }> = ({school}) => {
 
     const {isOpen, onOpen, onClose} = useDisclosure(); 
-    const location = {
-        address: '1600 Amphitheatre Parkway, Mountain View, california.',
-        lat: 37.42216,
-        lng: -122.08427,
-      }
+    // const location = 
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -41,13 +37,16 @@ const SchoolListItem: React.FC<{
                     <Divider orientation="horizontal" />
                     <ModalBody mb={2}>
                         <Box height={300}>
-                        <GoogleMapReact
-                            bootstrapURLKeys={{ key: googleMapsKey }}
-                            defaultCenter={location}
-                            defaultZoom={1}
-                        >
-                            
-                        </GoogleMapReact>
+                            <GoogleMapReact
+                                bootstrapURLKeys={{ key: googleMapsKey }}
+                                defaultCenter={{
+                                    lat: school.LAT ? school.LAT : 0,
+                                    lng: school.LON ? school.LON : 0,
+                                  }}
+                                defaultZoom={15}
+                            >
+                                <Box borderWidth={2} borderColor="red" borderRadius="50%" height={20} width={20} position="relative" left={-10} top={-10}></Box>
+                            </GoogleMapReact>
                         </Box>
                         <Link href='https://data-nces.opendata.arcgis.com/datasets/nces::private-school-locations-current/api' isExternal>
                             {'Data from data-nces.opendata.arcgis.com '} <ExternalLinkIcon ml={2} mb={1} />
