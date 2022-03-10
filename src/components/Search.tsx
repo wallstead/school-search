@@ -1,27 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import debounce from "lodash/debounce";
-import {
-    Input,
-    ScaleFade,
-    Spinner,
-    InputGroup,
-    HStack,
-    Stack,
-    InputLeftElement,
-    Button,
-    VStack,
-    OrderedList,
-    Divider,
-    Text,
-    Box,
-} from "@chakra-ui/react";
-import { Search2Icon } from "@chakra-ui/icons";
+import { Spinner } from "@chakra-ui/react";
 import { Card } from "@components/design/Card";
-import {theme} from '@theme/index';
 import DistrictListItem from "./DistrictListItem";
 import SchoolListItem from "./SchoolListItem";
 import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
 import SearchInputs from "./SearchInputs";
+import ResultsList from "./ResultsList";
 
 
 const Search: React.FC = () => {
@@ -54,7 +39,6 @@ const Search: React.FC = () => {
             if (district.length > 0) {
                 districtSearchResults = await searchSchoolDistricts(district);
                 setDistrictSearch(districtSearchResults);
-                console.log("District results", districtSearchResults);
             } else {
                 setDistrictSearch([]);
             }
@@ -84,7 +68,6 @@ const Search: React.FC = () => {
             if (school.length > 0 || (matchingChosenDistrictID && matchingChosenDistrictID.length > 0)) {
                 const schoolSearchResults = await searchSchools(school, matchingChosenDistrictID);
                 setSchoolSearch(schoolSearchResults);
-                console.log("School results", schoolSearchResults);
             } else {
                 setSchoolSearch([]);
             }
@@ -125,68 +108,24 @@ const Search: React.FC = () => {
             {searchingDistricts ? (
                 <Spinner mt={3} />
             ) : districtSearch.length > 0 ? (
-                <Box w="100%">
-                    <ScaleFade initialScale={0.9} in={true}>
-                        <VStack mt={3} w="100%">
-                            <HStack w="100%">
-                                <Text fontWeight="bold">Districts</Text>
-                                <Text color="gray.700">
-                                    Select a district to filter schools
-                                </Text>
-                            </HStack>
-                            <Divider orientation="horizontal" />
-                            <OrderedList
-                                w="100%"
-                                listStyleType="none"
-                                overflowY="auto"
-                                maxHeight="200px"
-                                spacing={1}
-                                pb={districtSearch.length > 3 ? 5 : 0}
-                                sx={{
-                                    maskImage: districtSearch.length > 3 ? 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0))' : 'none'
-                                }}
-                            >
-                                {districtSearch.map((district) => {
-                                    
-                                    return (
-                                        <DistrictListItem district={district} selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict} key={district.OBJECTID} />
-                                    );
-                                })}
-                            </OrderedList>
-                            <Divider orientation="horizontal" />
-                        </VStack>
-                    </ScaleFade>
-                </Box>
+                <ResultsList title="Districts" helperText="Select a district to filter schools">
+                    {districtSearch.map((district) => {
+                        return (
+                            <DistrictListItem district={district} selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict} key={district.OBJECTID} />
+                        );
+                    })}
+                </ResultsList>
             ) : null}
             {searchingSchools ? (
                 <Spinner mt={3} />
             ) : schoolSearch.length > 0 ? (
-                <Box w="100%">
-                    <ScaleFade initialScale={0.9} in={true}>
-                        <VStack mt={3} w="100%">
-                            <Text fontWeight="bold" w="100%">Schools</Text>
-                            <Divider orientation="horizontal" />
-                            <OrderedList
-                                w="100%"
-                                listStyleType="none"
-                                overflowY="auto"
-                                maxHeight="200px"
-                                spacing={1}
-                                pb={schoolSearch.length > 3 ? 5 : 0}
-                                sx={{
-                                    maskImage: schoolSearch.length > 3 ? 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0))' : 'none'
-                                }}
-                            >
-                                {schoolSearch.map((school, index) => {
-                                    return (
-                                        <SchoolListItem school={school} key={index} />
-                                    );
-                                })}
-                            </OrderedList>
-                            <Divider orientation="horizontal" />
-                        </VStack>
-                    </ScaleFade>
-                </Box>
+                <ResultsList title="Schools">
+                    {schoolSearch.map((school, index) => {
+                        return (
+                            <SchoolListItem school={school} key={index} />
+                        );
+                    })}
+                </ResultsList>
             ) : null}
         </Card>
     );
