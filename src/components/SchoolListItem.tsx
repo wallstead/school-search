@@ -86,7 +86,6 @@ const SchoolListItem: React.FC<{
                 }}
                 onClick={onOpen}
             >
-                
                 <HStack height={"40px"}>
                     <Text userSelect="none" mr={3}>{school.NAME}</Text>
                     <InfoOutlineIcon />

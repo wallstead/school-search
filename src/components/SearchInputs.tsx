@@ -4,7 +4,10 @@ import {
     InputGroup,
     Stack,
     InputLeftElement,
-    Button
+    Button,
+    FormControl,
+    Text,
+    FormLabel,
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons"
 import {theme} from '@theme/index'
@@ -20,33 +23,39 @@ const SearchInputs: React.FC<{
     return (
         <Stack spacing="5px" direction={{ base: 'column', md: 'row' }}>
             <Stack spacing="0px" direction={{ base: 'column', md: 'row' }}>
-                <InputGroup size="lg" mb={{ base: '5px', md: '0' }}>
-                    <InputLeftElement
-                        pointerEvents="none"
-                        children={<Search2Icon color="gray.300" />}
-                    />
-                    <Input
-                        type="tel"
-                        placeholder="School District"
-                        borderRightRadius={{ base: 'default', md: '0' }}
-                        borderRightColor={{ base: 'default', md: 'transparent' }}
-                        value={districtInput}
-                        onChange={(e) => setDistrictInput(e.target.value)}
-                    />
-                </InputGroup>
-                <InputGroup size="lg">
-                    <InputLeftElement
-                        pointerEvents="none"
-                        children={<Search2Icon color="gray.300" />}
-                    />
-                    <Input
-                        type="tel"
-                        placeholder="School Name"
-                        borderLeftRadius={{ base: 'default', md: '0' }}
-                        value={schoolInput}
-                        onChange={(e) => setSchoolInput(e.target.value)}
-                    />
-                </InputGroup>
+                <FormControl variant='floating'>
+                    <InputGroup size="lg" mb={{ base: '15px', md: '0' }}>
+                        <InputLeftElement
+                            pointerEvents="none"
+                            children={<Search2Icon color="gray.300" />}
+                        />
+                        <Input
+                            type="tel"
+                            borderRightRadius={{ base: 'default', md: '0' }}
+                            borderRightColor={{ base: 'default', md: 'transparent' }}
+                            value={districtInput}
+                            placeholder=" "
+                            onChange={(e) => setDistrictInput(e.target.value)}
+                        />
+                        <FormLabel>School District</FormLabel>
+                    </InputGroup>
+                </FormControl>
+                <FormControl variant='floating'>
+                    <InputGroup size="lg">
+                        <InputLeftElement
+                            pointerEvents="none"
+                            children={<Search2Icon color="gray.300" />}
+                        />
+                        <Input
+                            type="tel"
+                            placeholder=" "
+                            borderLeftRadius={{ base: 'default', md: '0' }}
+                            value={schoolInput}
+                            onChange={(e) => setSchoolInput(e.target.value)}
+                        />
+                        <FormLabel>School Name</FormLabel>
+                    </InputGroup>
+                </FormControl>
             </Stack>
             <Button
                 colorScheme="green"

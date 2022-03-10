@@ -32,7 +32,7 @@ const Search: React.FC = () => {
             const districtSearchResults = await searchSchoolDistricts(district);
             setDistrictSearch(districtSearchResults);
 
-            // if chosenDistrictID no longer exists in results, trigger a school search update
+            // If chosenDistrictID no longer exists in results, trigger a school search update
             const chosenDistrictInResults = districtSearchResults.find(district => district.LEAID === chosenDistrictID);
             if (!chosenDistrictInResults) {
                 setSelectedDistrict('');
