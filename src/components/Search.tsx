@@ -26,74 +26,59 @@ const Search: React.FC = () => {
         setDistrictSearch([]);
     }
 
-    async function startSearch(searching: string, district: string, school: string, chosenDistrict: NCESSchoolFeatureAttributes["LEAID"]) {
-        console.log('searching', searching)
-        // Only search districts if the district search string has changed
-        let didSearchDistricts = false;
-        let districtSearchResults: NCESDistrictFeatureAttributes[] = [];
+    async function startDistrictSearch(district: string, chosenDistrictID: NCESSchoolFeatureAttributes["LEAID"]) {
+        setSearchingDistricts(true);
+        if (district.length > 0) {
+            const districtSearchResults = await searchSchoolDistricts(district);
+            setDistrictSearch(districtSearchResults);
 
-        if (searching === "district") {
-            didSearchDistricts = true;
-            setSearchingDistricts(true);
-    
-            if (district.length > 0) {
-                districtSearchResults = await searchSchoolDistricts(district);
-                setDistrictSearch(districtSearchResults);
-            } else {
-                setDistrictSearch([]);
+            // if chosenDistrictID no longer exists in results, trigger a school search update
+            const chosenDistrictInResults = districtSearchResults.find(district => district.LEAID === chosenDistrictID);
+            if (!chosenDistrictInResults) {
+                setSelectedDistrict('');
             }
-    
-            setSearchingDistricts(false);
+        } else {
+            setDistrictSearch([]);
+            setSelectedDistrict('');
         }
+        setSearchingDistricts(false);
+    }
 
-        /* 
-            Trigger school search if the search string changes OR
-            we can no longer find the chosen district in the search
-            results for districts, if there was a search made for those
-        */
-
-        let matchingChosenDistrictID = chosenDistrict;
-        let shouldTriggerSchoolSearch = false;
-
-        if (chosenDistrict && didSearchDistricts) {
-            const matchingChosenDistrict = districtSearchResults.find(district => district.LEAID === chosenDistrict);
-            matchingChosenDistrictID = matchingChosenDistrict?.LEAID;
-            shouldTriggerSchoolSearch = true;
+    async function startSchoolSearch(school: string, chosenDistrictID: NCESSchoolFeatureAttributes["LEAID"]) {
+        setSearchingSchools(true);
+        // If school search input is not empty or a district has been selected
+        if (school.length > 0 || (chosenDistrictID && chosenDistrictID.length > 0)) {
+            const schoolSearchResults = await searchSchools(school, chosenDistrictID);
+            setSchoolSearch(schoolSearchResults);
+        } else {
+            setSchoolSearch([]);
         }
-        
-        if (searching === "school" || shouldTriggerSchoolSearch) {
-            setSearchingSchools(true);
-
-            // If school search input is not empty or a district has been selected
-            if (school.length > 0 || (matchingChosenDistrictID && matchingChosenDistrictID.length > 0)) {
-                const schoolSearchResults = await searchSchools(school, matchingChosenDistrictID);
-                setSchoolSearch(schoolSearchResults);
-            } else {
-                setSchoolSearch([]);
-            }
-    
-            setSearchingSchools(false);
-        }
+        setSearchingSchools(false);
     }
 
     // To delay search until the user stops typing to not abuse the API
-    const delayedSearch = useCallback(
-        debounce((searching, district, school, chosenDistrict) => startSearch(searching, district, school, chosenDistrict), 600),
+    const delayedDistrictSearch = useCallback(
+        debounce((district, selectedDistrict) => startDistrictSearch(district, selectedDistrict), 600),
+        []
+    );
+
+    const delayedSchoolSearch = useCallback(
+        debounce((school, selectedDistrict) => startSchoolSearch(school, selectedDistrict), 600),
         []
     );
 
     // Whenever the district or school name inputs change, trigger a delayed search
     useEffect(() => {
-        delayedSearch("district", districtInput, schoolInput, selectedDistrict)
+        delayedDistrictSearch(districtInput, selectedDistrict)
     }, [districtInput]);
 
     useEffect(() => {
-        delayedSearch("school", districtInput, schoolInput, selectedDistrict)
+        delayedSchoolSearch(schoolInput, selectedDistrict)
     }, [schoolInput]);
 
     // When the selected district is changed, instanty trigger a search
     useEffect(() => {
-        startSearch("school", districtInput, schoolInput, selectedDistrict)
+        startSchoolSearch(schoolInput, selectedDistrict)
     }, [selectedDistrict]);
 
     return (
