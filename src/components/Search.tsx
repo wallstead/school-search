@@ -88,7 +88,7 @@ const Search: React.FC = () => {
     }, [selectedDistrict]);
 
     return (
-        <Card variant="rounded">
+        <Card variant="rounded" pointerEvents="all">
             <SearchInputs
                 districtInput={districtInput}
                 schoolInput={schoolInput}
