@@ -29,11 +29,11 @@ export const CardTheme = {
     },
 }
 
-export const Card:React.FC<{variant:string, borderColor?:string}> = ({variant, children, borderColor, ...rest}) => {
+export const Card:React.FC<{variant:string, borderColor?:string, pointerEvents?:string}> = ({variant, children, borderColor, pointerEvents, ...rest}) => {
   const styles = useStyleConfig("Card", { variant })
   // Pass the computed styles into the `__css` prop
   return (
-    <Box className="cs-card" __css={styles} borderColor={borderColor} {...rest} >
+    <Box className="cs-card" __css={styles} borderColor={borderColor} pointerEvents={pointerEvents} {...rest} >
       {children}
     </Box>
   )

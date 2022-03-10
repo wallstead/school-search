@@ -22,7 +22,6 @@ const Glob: React.FC<{
     radius?:string,
     rotate?:number
 }> = ({
-    children, 
     color=theme.colors.brand.blue,
     size=["50%", "50%"], 
     globSizes=[[40, 80], [60, 50], [20, 80]],
@@ -40,7 +39,6 @@ const Glob: React.FC<{
                 height: size[1],
                 opacity,
                 transform: rotate ? `rotate(${rotate}deg)` : undefined,
-                zIndex: -1
             }}>
                 <div className='glob'
                     style={{
