@@ -16,6 +16,7 @@ import {
     Button,
     useDisclosure
 } from "@chakra-ui/react";
+import {theme} from '@theme/index';
 import {CheckIcon, InfoOutlineIcon, ExternalLinkIcon} from "@chakra-ui/icons";
 import {NCESDistrictFeatureAttributes } from "@utils/nces"
 
@@ -36,7 +37,7 @@ const DistrictListItem: React.FC<{
             borderRadius={12}
             transition="background-color 150ms linear, border 150ms linear"
             background={selected ? "gray.100" : "gray.50"}
-            border={selected ? "2px solid green": "2px solid transparent"}
+            border={selected ? `2px solid ${theme.colors.brand.darkGreen}`: "2px solid transparent"}
             _hover={{
                 background: "gray.100",
                 cursor: "pointer",
@@ -91,7 +92,7 @@ const DistrictListItem: React.FC<{
                 </HStack>
                 {selected &&
                     <ScaleFade initialScale={0.5} in={true}>
-                        <CheckIcon color="green" mb={1} />
+                        <CheckIcon color={theme.colors.brand.darkGreen} mb={1} />
                     </ScaleFade>}
             </HStack>
         </ListItem>

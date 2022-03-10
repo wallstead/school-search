@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 import { Card } from "@components/design/Card";
+import {theme} from '@theme/index';
 import DistrictListItem from "./DistrictListItem";
 import SchoolListItem from "./SchoolListItem";
 import { searchSchoolDistricts, searchSchools, NCESDistrictFeatureAttributes, NCESSchoolFeatureAttributes } from "@utils/nces"
@@ -144,6 +145,7 @@ const Search: React.FC = () => {
                 </Stack>
                 <Button
                     colorScheme="green"
+                    color={theme.colors.brand.darkGreen}
                     variant="ghost"
                     borderRadius="11px"
                     size="lg"
