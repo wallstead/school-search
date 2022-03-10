@@ -1,8 +1,8 @@
 import React from "react";
-import {Box} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import Logo from '../header_logo.png';
 import Glob from "./design/Glob";
-import {theme} from '@theme/index';
+import { theme } from '@theme/index';
 
 
 const Header: React.FC = ({children}) => {

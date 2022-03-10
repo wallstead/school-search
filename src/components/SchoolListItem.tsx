@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     HStack,
     UnorderedList,
@@ -13,19 +13,18 @@ import {
     ModalCloseButton,
     Link,
     useDisclosure,
-    Box
-} from "@chakra-ui/react";
-import {theme} from '@theme/index';
-import {googleMapsKey} from '../utils/maps'
-import {InfoOutlineIcon, ExternalLinkIcon} from "@chakra-ui/icons";
-import {NCESSchoolFeatureAttributes } from "@utils/nces"
-import GoogleMapReact from 'google-map-react'
-
+    Box,
+} from '@chakra-ui/react';
+import { theme } from '@theme/index';
+import { googleMapsKey } from '../utils/maps';
+import { InfoOutlineIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { NCESSchoolFeatureAttributes } from '@utils/nces';
+import GoogleMapReact from 'google-map-react';
 
 const SchoolListItem: React.FC<{
     school: NCESSchoolFeatureAttributes;
-}> = ({school}) => {
-    const {isOpen, onOpen, onClose} = useDisclosure(); 
+}> = ({ school }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
         <>
@@ -42,30 +41,46 @@ const SchoolListItem: React.FC<{
                                 defaultCenter={{
                                     lat: school.LAT ? school.LAT : 0,
                                     lng: school.LON ? school.LON : 0,
-                                  }}
+                                }}
                                 defaultZoom={15}
                                 draggable={false}
                             >
-                                <Box borderWidth={3} borderColor={theme.colors.brand.blue} borderRadius="50%" height={20} width={20} position="relative" left={-10} top={-10}></Box>
+                                <Box
+                                    borderWidth={3}
+                                    borderColor={theme.colors.brand.blue}
+                                    borderRadius="50%"
+                                    height={20}
+                                    width={20}
+                                    position="relative"
+                                    left={-10}
+                                    top={-10}
+                                ></Box>
                             </GoogleMapReact>
                         </Box>
-                        <Link href='https://data-nces.opendata.arcgis.com/datasets/nces::private-school-locations-current/api' isExternal>
+                        <Link
+                            href="https://data-nces.opendata.arcgis.com/datasets/nces::private-school-locations-current/api"
+                            isExternal
+                        >
                             {'Data from data-nces.opendata.arcgis.com '} <ExternalLinkIcon ml={2} mb={1} />
                         </Link>
-                        <UnorderedList 
-                            listStyleType="none" 
-                            ml={0} 
-                            mt={2} 
-                            spacing={1} 
-                            maxHeight="300px" 
+                        <UnorderedList
+                            listStyleType="none"
+                            ml={0}
+                            mt={2}
+                            spacing={1}
+                            maxHeight="300px"
                             overflowY="auto"
                             pb={5}
                             sx={{
-                                maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0))'
+                                maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0))',
                             }}
                         >
-                            {Object.entries(school).map(schoolInfo => {
-                                return <ListItem key={schoolInfo[0]}><Text fontWeight="bold">{schoolInfo[0]}:</Text> {schoolInfo[1]}</ListItem>
+                            {Object.entries(school).map((schoolInfo) => {
+                                return (
+                                    <ListItem key={schoolInfo[0]}>
+                                        <Text fontWeight="bold">{schoolInfo[0]}:</Text> {schoolInfo[1]}
+                                    </ListItem>
+                                );
                             })}
                         </UnorderedList>
                     </ModalBody>
@@ -78,16 +93,18 @@ const SchoolListItem: React.FC<{
                 transition="background-color 150ms linear"
                 background="gray.50"
                 _hover={{
-                    background: "gray.100",
-                    cursor: "pointer",
+                    background: 'gray.100',
+                    cursor: 'pointer',
                 }}
                 _active={{
-                    background: "gray.200"
+                    background: 'gray.200',
                 }}
                 onClick={onOpen}
             >
-                <HStack height={"40px"}>
-                    <Text userSelect="none" mr={3}>{school.NAME}</Text>
+                <HStack height={'40px'}>
+                    <Text userSelect="none" mr={3}>
+                        {school.NAME}
+                    </Text>
                     <InfoOutlineIcon />
                 </HStack>
             </ListItem>
