@@ -9,7 +9,8 @@ import {
     Text,
     FormLabel,
 } from "@chakra-ui/react";
-import { Search2Icon } from "@chakra-ui/icons"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationDot, faSchool } from '@fortawesome/free-solid-svg-icons'
 import {theme} from '@theme/index'
 
 
@@ -27,7 +28,7 @@ const SearchInputs: React.FC<{
                     <InputGroup size="lg" mb={{ base: '15px', md: '0' }}>
                         <InputLeftElement
                             pointerEvents="none"
-                            children={<Search2Icon color="gray.300" />}
+                            children={<FontAwesomeIcon icon={faLocationDot} color={theme.colors.gray['300']} />}
                         />
                         <Input
                             type="tel"
@@ -44,7 +45,7 @@ const SearchInputs: React.FC<{
                     <InputGroup size="lg">
                         <InputLeftElement
                             pointerEvents="none"
-                            children={<Search2Icon color="gray.300" />}
+                            children={<FontAwesomeIcon icon={faSchool} color={theme.colors.gray['300']} transform="shrink-1" />}
                         />
                         <Input
                             type="tel"
@@ -58,8 +59,8 @@ const SearchInputs: React.FC<{
                 </FormControl>
             </Stack>
             <Button
-                colorScheme="green"
-                color={theme.colors.brand.darkGreen}
+                colorScheme="blue"
+                color={theme.colors.brand.darkBlue}
                 variant="ghost"
                 borderRadius="11px"
                 size="lg"

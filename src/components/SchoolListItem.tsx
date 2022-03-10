@@ -36,7 +36,7 @@ const SchoolListItem: React.FC<{
                     <ModalCloseButton />
                     <Divider orientation="horizontal" />
                     <ModalBody mb={2}>
-                        <Box height={300} mb={3}>
+                        <Box height={300} mb={3} borderWidth={2} borderColor={theme.colors.brand.blue}>
                             <GoogleMapReact
                                 bootstrapURLKeys={{ key: googleMapsKey }}
                                 defaultCenter={{
@@ -46,7 +46,7 @@ const SchoolListItem: React.FC<{
                                 defaultZoom={15}
                                 draggable={false}
                             >
-                                <Box borderWidth={2} borderColor={theme.colors.brand.darkGreen} borderRadius="50%" height={20} width={20} position="relative" left={-10} top={-10}></Box>
+                                <Box borderWidth={3} borderColor={theme.colors.brand.blue} borderRadius="50%" height={20} width={20} position="relative" left={-10} top={-10}></Box>
                             </GoogleMapReact>
                         </Box>
                         <Link href='https://data-nces.opendata.arcgis.com/datasets/nces::private-school-locations-current/api' isExternal>
